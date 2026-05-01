@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>泡泡龙三消</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: #1a1a2e;
+      font-family: 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+    #gameContainer {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    #gameCanvas {
+      border-radius: 12px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.5);
+    }
+    .theme-classic { --bg-primary: #1a1a2e; --bg-secondary: #16213e; --accent: #4facfe; }
+    .theme-dark { --bg-primary: #0d0d0d; --bg-secondary: #1a1a1a; --accent: #ff6b6b; }
+    .theme-candy { --bg-primary: #2d1b4e; --bg-secondary: #4a2c7a; --accent: #ff69b4; }
+  </style>
+</head>
+<body class="theme-classic">
+  <div id="gameContainer">
+    <canvas id="gameCanvas"></canvas>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
