@@ -30,6 +30,8 @@ export class GameEngine {
   lastEliminationTime: number = 0;
   
   theme: ThemeType = 'classic';
+  currentBubbleColor: BubbleColor = 0;
+  currentBubbleType: BubbleType = 'normal';
   nextBubbleColor: BubbleColor = 0;
   nextBubbleType: BubbleType = 'normal';
   
@@ -187,6 +189,9 @@ export class GameEngine {
     }
     
     this.prepareNextBubble();
+    this.currentBubbleColor = this.nextBubbleColor;
+    this.currentBubbleType = this.nextBubbleType;
+    this.prepareNextBubble();
   }
   
   private gridToPixel(row: number, col: number): { x: number, y: number } {
@@ -219,12 +224,10 @@ export class GameEngine {
   }
   
   private swapBubbles(): void {
-    if (this.shootingBubble) {
-      const colors = this.levelConfig.colors;
-      const currentIdx = colors.indexOf(this.nextBubbleColor);
-      const nextIdx = (currentIdx + 1) % colors.length;
-      this.nextBubbleColor = colors[nextIdx];
-    }
+    const colors = this.levelConfig.colors;
+    const currentIdx = colors.indexOf(this.currentBubbleColor);
+    const nextIdx = (currentIdx + 1) % colors.length;
+    this.currentBubbleColor = colors[nextIdx];
   }
   
   private shoot(): void {
@@ -238,14 +241,16 @@ export class GameEngine {
       y: this.launcherY,
       vx: Math.cos(this.aimAngle) * speed,
       vy: Math.sin(this.aimAngle) * speed,
-      color: this.nextBubbleColor,
-      type: this.nextBubbleType,
+      color: this.currentBubbleColor,
+      type: this.currentBubbleType,
       radius: this.bubbleRadius,
       active: true,
       bounces: 0,
-      maxBounces: this.nextBubbleType === 'reflect' ? 5 : 0
+      maxBounces: this.currentBubbleType === 'reflect' ? 5 : 0
     };
     this.shootingBubble = null;
+    this.currentBubbleColor = this.nextBubbleColor;
+    this.currentBubbleType = this.nextBubbleType;
     this.prepareNextBubble();
   }
   
@@ -677,7 +682,7 @@ export class GameEngine {
     this.ctx.fillRect(0, -6, 45, 12);
     this.ctx.restore();
     
-    this.ctx.fillStyle = theme.bubbleColors[this.nextBubbleColor];
+    this.ctx.fillStyle = theme.bubbleColors[this.currentBubbleColor];
     this.ctx.beginPath();
     this.ctx.arc(this.launcherX, this.launcherY, this.bubbleRadius, 0, Math.PI * 2);
     this.ctx.fill();
