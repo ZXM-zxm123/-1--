@@ -692,6 +692,34 @@ export class GameEngine {
     this.ctx.beginPath();
     this.ctx.arc(this.launcherX - this.bubbleRadius * 0.3, this.launcherY - this.bubbleRadius * 0.3, this.bubbleRadius * 0.3, 0, Math.PI * 2);
     this.ctx.stroke();
+    
+    this.drawNextBubblePreview(theme);
+  }
+  
+  private drawNextBubblePreview(theme: typeof THEMES.classic): void {
+    const previewX = this.width - 50;
+    const previewY = this.launcherY;
+    
+    this.ctx.fillStyle = 'rgba(0,0,0,0.3)';
+    this.ctx.beginPath();
+    this.ctx.roundRect(previewX - 25, previewY - 25, 50, 50, 8);
+    this.ctx.fill();
+    
+    this.ctx.fillStyle = theme.bubbleColors[this.nextBubbleColor];
+    this.ctx.beginPath();
+    this.ctx.arc(previewX, previewY, this.bubbleRadius * 0.85, 0, Math.PI * 2);
+    this.ctx.fill();
+    
+    this.ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    this.ctx.lineWidth = 2;
+    this.ctx.beginPath();
+    this.ctx.arc(previewX - this.bubbleRadius * 0.25, previewY - this.bubbleRadius * 0.25, this.bubbleRadius * 0.25, 0, Math.PI * 2);
+    this.ctx.stroke();
+    
+    this.ctx.fillStyle = theme.uiColor;
+    this.ctx.font = '12px Segoe UI';
+    this.ctx.textAlign = 'center';
+    this.ctx.fillText('下一个', previewX, previewY + 45);
   }
   
   private drawUI(theme: typeof THEMES.classic): void {
